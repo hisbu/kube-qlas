@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: qlas
+    type: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: frontend
+  template:
+    metadata:
+      labels:
+        app: qlas
+        type: frontend
+    spec: 
+      containers:
+        - name: frontend-server
+          image: hisbu/qlas
+          ports:
+            - containerPort: 80

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: qlas
+    type: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: backend
+  template:
+    metadata:
+      labels:
+        app: qlas
+        type: backend
+    spec: 
+      containers:
+        - name: backend-server
+          image: hisbu/nodeapp
+          env:
+            - name: NQ_DB_HOST
+              value: db-svc
+            - name: NQ_DB_USER
+              value: root
+            - name: NQ_DB_PASSWORD
+              value: password
+            - name: NQ_DB_NAME
+              value: dbqlas
+          ports:
+            - containerPort: 2017

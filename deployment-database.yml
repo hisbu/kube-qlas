@@ -1,0 +1,51 @@
+# ---
+
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: db-volume-claim
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   volumeMode: Filesystem
+#   resources:
+#     requests:
+#       storage: 2Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-deployment
+  labels:
+    app: qlas
+    type: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qlas
+  template:
+    metadata:
+      labels:
+        app: qlas
+        type: database
+    spec:
+      # volumes:
+      #   - name: db
+      #     persistentVolumeClaim:
+      #         claimName: db-volume-claim
+      containers:
+        - name: database-server
+          image: mariadb:10.3
+          # volumeMounts:
+          #   - mountPath: /var/lib/mysql
+          #     name: db
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+            - name: MYSQL_DATABASE
+              value: dbqlas
+          ports:
+            - containerPort: 3306

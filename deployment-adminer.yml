@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminer-deployment
+  labels:
+    app: qlas
+    type: adminer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: adminer
+  template:
+    metadata:
+      labels:
+        app: qlas
+        type: adminer
+    spec: 
+      containers:
+        - name: adminer-database
+          image: adminer
+          ports:
+            - containerPort: 8080
